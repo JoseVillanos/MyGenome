@@ -1,6 +1,6 @@
 # MyGenome
 ## Method
-## Quality Checking
+### Quality Checking
 I used fastqc to check if the quality of the reads was good enough to start assembling. The adaptor content in my forward and reserve reads was too high, so trimming had to occur.
 
 ### Trimming
