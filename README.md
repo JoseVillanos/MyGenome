@@ -1,7 +1,8 @@
 # MyGenome
+This detailed outline of the genome assembly process of <em>Pyricularia oryzae</em>
 ## Method
 ### Quality Checking
-I used fastqc to check if the quality of the reads was good enough to start assembling. The adaptor content in my forward and reserve reads was too high, so trimming had to occur.
+I used FastQC to check if the quality of the reads was good enough to start assembling. The adaptor content in my forward and reserve reads was too high, so trimming had to occur.
 
 ![screencapture-file-C-Users-josev-Documents-fastqc-report-html-2025-04-22-21_23_08](https://github.com/user-attachments/assets/acd9f243-c14d-4820-a1e6-f5ff9651c406)
 
