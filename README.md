@@ -3,7 +3,7 @@
 ### Quality Checking
 I used fastqc to check if the quality of the reads was good enough to start assembling. The adaptor content in my forward and reserve reads was too high, so trimming had to occur.
 
-<img width="719" alt="Before_Adaptor_Content" src="![screencapture-file-C-Users-josev-Documents-fastqc-report-html-2025-04-22-21_23_08](https://github.com/user-attachments/assets/4ca4217e-5a73-4c59-8415-3451f338a64b)
+<img width="719" alt="Before_Adaptor_Content" src="https://github.com/user-attachments/assets/4ca4217e-5a73-4c59-8415-3451f338a64b
 " />
 
 
