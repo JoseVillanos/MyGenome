@@ -17,18 +17,60 @@ The sequences were trimmed using trimmomatic. The following code was used:
 ```
 java -jar trimmomatic-0.38.jar  PE -threads 2 -phred33 -trimlog Pg1108_errorlog.txt Pg1108_1.fq Pg1108_2.fq Pg1108_1_paired.fq Pg1108_1_unpaired.fq Pg1108_2_paired.fq Pg1108_2_unpaired.fq ILLUMINACLIP:adaptors.fasta:2:30:10 CROP:280 SLIDINGWINDOW:20:20 MINLEN:150
 ```
+<em><b>NOTE</b>: trimmomatic-0.38.jar can be found in Scripts </em>
+
 By running FastQC again, the following shows that the adapters have been trimmed from the sequences 
 <img width="706" alt="After_Adaptor_Content" src="https://github.com/user-attachments/assets/0c82b63c-f154-4a61-b1e1-e103b0a58aba" />
 ### Assembly
 The velvet is the program that was used for assembly. However, velvet requires a k-mer value to base the assembly on. <a href = https://dna.med.monash.edu/~torsten/velvet_advisor/> Velvet Advisor</a> is used to find a suggested k-mer value as a starting point.
 
-Velvet Optimiser will be used to find the best k-mer value in a 60 k-mer range of the suggested k-mer value by steps of 10. The following code was ran:
+Velvet Optimiser will be used to find the best k-mer value in a 60 k-mer range of the suggested k-mer value by steps of 10. The following code was run:
 ```
 sbatch velvetoptimiser_noclean.sh Pg1108 61 121 10
 ```
-<em><b>EX</b>: If the suggested K-mer value is 101, then Velvet optimiser will test k-mer values 61, 71, 81, 91, 101, 111, and 121.</em>
+<em><b>EX</b>: If the suggested K-mer value is 91, then Velvet optimiser will test k-mer values 61, 71, 81, 91, 101, 111, and 121.</em>
 
 <em><b>NOTE</b>: velvetoptimser_noclean.sh can be found in Scripts </em>
+
+Using the k-mer suggested by the Velvet Optimiser, it is run through the Velvet Optimiser once more. However, the difference is that it is a range of 20 k-mers by steps of 2. 
+```
+sbatch velvetoptimiser_noclean.sh Pg1108 91 111 2
+```
+<em><b>EX</b>: If the suggested k-mer value is 101, then Velvet optimiser will test k-mer values 91, 93, 95, 97, 99, 101, 103, 105, 107, 109, and 111 </em>
+
+<em><b>NOTE</b>: velvetoptimser_noclean.sh can be found in Scripts </em>
+
+Finally, the genome can be assembled using the best k-mer values using the following code:
+```
+velveth Pg1108_97 97 -shortPaired -fastq -separate Pg1108_1_paired.fastq Pg1108_2_paired.fastq
+velvetg Pg1108_97
+```
+<em><b>NOTE</b>: Pg1108_1_paired.fastq and Pg1108_2_paired.fastq our outputs from trimmomatic </em>
+### Finalizing the Assembly
+The headings for each contig are changed by using:
+```
+perl SimpleFastaHeaders.pl Pg1108.fasta
+```
+<em><b>NOTE</b>: SimpleFastaHeaders.pl can be found in Scripts </em>
+
+Short contigs are removed using the following code:
+```
+perl CullShortContigs.pl Pg1108_nh.fasta
+```
+<em><b>NOTE</b>: CullShortContigs.pl can be found in Scripts </em>
+
+Each contig length is measured using:
+```
+SeqLen.pl Pg1108_final.fasta
+```
+<em><b>NOTE</b>: SeqLen.pl can be found in Scripts </em>
+
+The completeness of the genome is measured using BUSCO:
+```
+sbatch BuscoSingularity.sh Pg1108_final.fasta
+```
+
+
 
 
 
