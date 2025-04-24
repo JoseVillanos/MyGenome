@@ -9,7 +9,7 @@ The quality of the sequences was checked using FastQC, a bioinformatics software
 fastqc Pg1108_1.fq.gz
 fastqc Pg1108_2.fq.gz
 ```
-<em><b>NOTE</b>: 1 is the forward reads and 2 is the reverse reads</em>
+<small><em><b>NOTE</b>: 1 is the forward reads and 2 is the reverse reads</em></small>
 ![screencapture-file-C-Users-josev-Documents-fastqc-report-html-2025-04-22-21_23_08](https://github.com/user-attachments/assets/acd9f243-c14d-4820-a1e6-f5ff9651c406)
 The FastQC report showed that there was adaptor contamination that must be trimmed before assembly can start.
 ### Trimming
