@@ -69,6 +69,8 @@ The completeness of the genome is measured using BUSCO:
 ```
 sbatch BuscoSingularity.sh Pg1108_final.fasta
 ```
+<em><b>NOTE</b>: BuscoSingularity.sh can be found in Scripts </em>
+
 
 
 
