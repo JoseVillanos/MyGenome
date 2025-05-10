@@ -121,6 +121,44 @@ awk '$4/$3 > 0.9 {print $2 ",mitochondrion"}' MoMitochondrion.Pg1108.BLAST > Pg1
 ```
 This will produce a csv file than contains the contigs that were found to be mitochondrial sequences.
 
+### Gene prediction
+First is making the maker annotation
+```
+echo '##FASTA' | cat B71Ref2_a0.3.gff3 - B71Ref2.fasta > B71Ref2.gff3
+maker2zff B71Ref2.gff3
+```
+Next is to obtain the unique genes from the genome. The following code was used:
+```
+fathom genome.ann genome.dna -categorize 1000
+fathom uni.ann uni.dna -export 1000 -plus
+```
+
+Next is training HMM using forge. The following code was used:
+```
+forge export.ann export.dna
+hmm-assembler.pl Moryzae . > Moryzae.hmm
+```
+Now Snap can finally be run with the following code:
+```
+snap-hmm Moryzae.hmm Pg1108_final.fasta > Pg1108-snap.zff
+snap-hmm Moryzae.hmm Pg1108_final.fasta -gff > Pg1108-snap.gff2
+```
+The next step is to run AUGUSTUS
+```
+augustus --species=magnaporthe_grisea --gff3=on --singlestrand=true --progress=true ../snap/Pg1108_final.fasta > Pg1108-augustus.gff3
+```
+The next step is to run maker with the following code:
+```
+maker -CTL
+maker 2>&1 | tee maker.log
+```
+
+Lastly, for gene prediction, the files will be merged with the following code:
+```
+gff3_merge -d Pg1108_final.maker.output/Pfinal_master_datastore_index.log -o Pg1108-annotations.gff
+fasta_merge -d Pg1108_final.maker.output/Pg1108_final_master_datastore_index.log
+```
+
 
 
 
